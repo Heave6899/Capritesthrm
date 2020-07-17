@@ -12,7 +12,7 @@ namespace HRM.Controllers
         // GET: User
         public ActionResult Login()
         {
-            return View();
+            return View(); 
         }
         
         [HttpPost]
@@ -21,10 +21,34 @@ namespace HRM.Controllers
             using (var context = new HRMEntities())
             {
                 bool isValid = context.User.Any(x => x.UserName == model.UserName && x.Password == model.Password);
+                int uid = (from s in context.User where s.UserName == model.UserName & s.Password == model.Password select s.UserId).First();
                 if (isValid)
-                { 
-                    FormsAuthentication.SetAuthCookie(model.UserName, false);
-                    return RedirectToAction("Index", "Home");
+                {
+                    if (uid != 0)
+                    {
+                        Session["UserID"] = uid;
+                        var UserName = (from s in context.User where s.UserId == uid select s.UserName).First();
+                        var RoleId = (from s in context.User where s.UserId == uid select s.RoleId).First();
+                        Session["UserName"] = UserName;
+                        Session["RoleId"] = RoleId;
+                        FormsAuthentication.SetAuthCookie(UserName, true);
+                        if (RoleId == 1)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (RoleId == 13)
+                        {
+                            return RedirectToAction("HRDashbord", "Home");
+                        }
+                        else if (RoleId == 19)
+                        {
+                            return RedirectToAction("EmployeeDashbord", "Home");
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "User");
+                    }
                 }
                 ModelState.AddModelError("", "Invalid username or Password");
                 return View();
@@ -32,6 +56,29 @@ namespace HRM.Controllers
             }
         }
 
+        public User GetUserDetails(int id)
+        {
+            try
+            {
+                User userDetails = new User();
+
+                using (var db = new HRMEntities())
+                {
+                    userDetails = db.User.Where(c => c.UserId == id).Select(c => new User()
+                    {
+                        RoleId = c.RoleId,
+                        UserName = c.UserName,
+                    }).FirstOrDefault();
+                }
+                return userDetails;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
         //////////[HttpPost]
         //////////public ActionResult Login(User model)
         //////////{

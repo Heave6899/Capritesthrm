@@ -44,6 +44,7 @@
         <AssociationConnector Association="HRMModel.FK_LeaveBalance_EmployeeLeave" ManuallyRouted="false" />
         <AssociationConnector Association="HRMModel.FK_LeaveBalance_LeaveType" ManuallyRouted="false" />
         <AssociationConnector Association="HRMModel.FK_RolePermission_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="HRMModel.FK_User_Role" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

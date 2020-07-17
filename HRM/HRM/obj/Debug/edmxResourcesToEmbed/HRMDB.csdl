@@ -222,6 +222,7 @@
     <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="RolePermission" Relationship="Self.FK_RolePermission_Role" FromRole="Role" ToRole="RolePermission" />
+    <NavigationProperty Name="User" Relationship="HRMModel.FK_User_Role" FromRole="Role" ToRole="User" />
   </EntityType>
   <EntityType Name="RolePermission">
     <Key>
@@ -263,6 +264,7 @@
     <Property Name="Salt" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="BankDetails" Relationship="Self.FK_BankDetails_User" FromRole="User" ToRole="BankDetails" />
     <NavigationProperty Name="CompanyDetails" Relationship="Self.FK_CompanyDetails_User" FromRole="User" ToRole="CompanyDetails" />
+    <NavigationProperty Name="Role" Relationship="HRMModel.FK_User_Role" FromRole="User" ToRole="Role" />
   </EntityType>
   <EntityType Name="WeekendDay">
     <Key>
@@ -616,5 +618,21 @@
       <End Role="Role" EntitySet="Role" />
       <End Role="RolePermission" EntitySet="RolePermission" />
     </AssociationSet>
+    <AssociationSet Name="FK_User_Role" Association="HRMModel.FK_User_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_User_Role">
+    <End Type="HRMModel.Role" Role="Role" Multiplicity="0..1" />
+    <End Type="HRMModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

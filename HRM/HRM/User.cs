@@ -38,5 +38,6 @@ namespace HRM
         public virtual ICollection<BankDetails> BankDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyDetails> CompanyDetails { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

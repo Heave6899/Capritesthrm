@@ -176,6 +176,7 @@
     <Compile Include="CountryMaster.cs">
       <DependentUpon>HRMdb.tt</DependentUpon>
     </Compile>
+    <Compile Include="CustomFilters\HRMFilter.cs" />
     <Compile Include="Employee.cs">
       <DependentUpon>HRMdb.tt</DependentUpon>
     </Compile>
